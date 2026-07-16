@@ -2,6 +2,25 @@
 
 Horizon Atlas is an interactive planetary intelligence lab. It turns abstract global trade-offs into a tactile simulation: tune policy investment across energy, food, water, health, and education; run the model to 2100; compare futures; and export a concise mission brief.
 
+## Experience design
+
+The interface uses a kinetic editorial system inspired by cinematic spatial portfolios while keeping the product accessible and light enough to run without WebGL. Its coordinated motion language includes:
+
+1. orbital boot and perimeter progress sequence;
+2. staggered kinetic headline reveal;
+3. pointer-reactive Earth with counter-rotating orbits;
+4. continuous editorial marquee;
+5. scroll-linked chapter reveals and page progress;
+6. spring-like policy slider feedback and preset transitions;
+7. cancel-safe simulation shockwave and node propagation;
+8. animated metrics and interpretation state;
+9. perspective-reactive future cards;
+10. focus-managed spatial mission brief;
+11. mobile bottom navigation; and
+12. reduced-motion static fallbacks.
+
+The cinematic interaction benchmark was [Sushant Gagneja's React Three Fiber portfolio](https://sushant-gagneja.vercel.app), used as inspiration rather than copied. Horizon Atlas deliberately prioritizes readable content, native controls, keyboard access, and performance.
+
 ## Why it exists
 
 Most global-development tools are data viewers. Horizon Atlas is a conversation engine: it makes assumptions visible, demonstrates second-order effects, and helps an audience ask better questions. It is explicitly an educational systems model—not a forecasting or policy-prescription tool.

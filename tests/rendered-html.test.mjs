@@ -19,7 +19,11 @@ test("server renders the complete Horizon Atlas experience", async () => {
   assert.match(html, /INTERVENTION LAB/);
   assert.match(html, /FUTURE COMPARISON/);
   assert.match(html, /aria-label="Clean energy investment"/);
+  assert.match(html, /MODEL THE IMPOSSIBLE/);
+  assert.match(html, /LOAD A PATHWAY/);
+  assert.match(html, /data-run-simulation/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/);
+  assert.doesNotMatch(html, /Â|Ã|â€|â€”|â€¦/);
 });
 
 test("source includes accessibility and responsive safeguards", async () => {
@@ -30,11 +34,16 @@ test("source includes accessibility and responsive safeguards", async () => {
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
   assert.match(page, /aria-modal="true"/);
+  assert.match(page, /requestAnimationFrame/);
+  assert.match(page, /IntersectionObserver/);
+  assert.match(page, /prefers-reduced-motion/);
+  assert.match(page, /trapFocus/);
   assert.match(page, /aria-label=/);
   assert.match(page, /disabled=\{running/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /focus-visible/);
-  assert.match(css, /@media\(max-width:600px\)/);
+  assert.match(css, /@media\(max-width:720px\)/);
+  assert.ok((css.match(/@keyframes/g) ?? []).length >= 12, "expected a rich motion system");
   assert.match(layout, /interactive planetary intelligence lab/i);
   assert.doesNotMatch(pkg, /react-loading-skeleton/);
 });
