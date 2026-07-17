@@ -1,4 +1,4 @@
-# Horizon Atlas
+ # Horizon Atlas
 
 Horizon Atlas is an interactive planetary intelligence lab. It turns abstract global trade-offs into a tactile simulation: tune policy investment across energy, food, water, health, and education; run the model to 2100; compare futures; and export a concise mission brief.
 
