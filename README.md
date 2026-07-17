@@ -43,6 +43,7 @@ npm test
 npm run lint
 ```
 
+
 The production build targets Cloudflare-compatible ESM through Vinext. The interface supports keyboard navigation, reduced-motion preferences, mobile layouts, semantic controls, and print-to-PDF mission briefs.
 
 ## Model transparency
