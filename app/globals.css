@@ -100,4 +100,7 @@ footer{padding:42px 5vw;border-top:1px solid var(--line);display:flex;align-item
 @media(max-width:720px){.topbar{animation:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.preloader{display:none}.hero-stagger,[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}.cursor-ring,.cursor-dot{display:none!important}.globe{transform:none!important}}
 .brand{min-height:44px}
+.brief-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.brief .brief-actions .run{max-width:none;margin-top:10px}.brief-actions .secondary-run{color:var(--paper);background:var(--dark)}.copy-status{min-height:1.2em;margin:12px 0 0;color:#3f5f50;font:11px/1.4 monospace}
+@media(max-width:720px){.brief-actions{grid-template-columns:1fr}}
+@media print{.brief-actions,.copy-status{display:none}}
 @media print{body>*{display:none}.modal{position:static;background:white;padding:0}.modal,.brief{display:block}.close,.brief .run{display:none}}

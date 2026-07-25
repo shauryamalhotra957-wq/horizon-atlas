@@ -17,7 +17,8 @@ The interface uses a kinetic editorial system inspired by cinematic spatial port
 9. perspective-reactive future cards;
 10. focus-managed spatial mission brief;
 11. mobile bottom navigation; and
-12. reduced-motion static fallbacks.
+12. reduced-motion static fallbacks; and
+13. validated share links that restore the exact five-lever scenario and simulation year.
 
 The cinematic interaction benchmark was [Sushant Gagneja's React Three Fiber portfolio](https://sushant-gagneja.vercel.app), used as inspiration rather than copied. Horizon Atlas deliberately prioritizes readable content, native controls, keyboard access, and performance.
 

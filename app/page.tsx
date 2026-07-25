@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { parseScenario, serializeScenario } from "./scenario-share.mjs";
 
 const levers = [
   { id: "energy", label: "Clean energy", hint: "Grid decarbonization", color: "#c7ff4a" },
@@ -37,6 +38,7 @@ export default function Home() {
   const [intro, setIntro] = useState(true);
   const [preset, setPreset] = useState("Balanced");
   const [announcement, setAnnouncement] = useState("Balanced pathway loaded");
+  const [shareStatus, setShareStatus] = useState("");
   const progressRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
@@ -47,9 +49,21 @@ export default function Home() {
   const score = useMemo(() => Math.min(100, Math.round(28 + values.reduce((a, b) => a + b, 0) / 5 * .72)), [values]);
   const temp = useMemo(() => Math.max(1.2, 3.05 - values[0] * .013 - values[2] * .003).toFixed(1), [values]);
   const lives = useMemo(() => (values[3] * 1.8 + values[1] * .6).toFixed(0), [values]);
+  const scenarioQuery = useMemo(() => serializeScenario(values, year, preset), [values, year, preset]);
   const outlook = score >= 88 ? "Regenerative breakthrough" : score >= 72 ? "Resilient transition" : score >= 55 ? "Fragile progress" : "Systemic risk";
 
   useEffect(() => {
+    const sharedScenario = parseScenario(window.location.search);
+    const sharedStateFrame = window.requestAnimationFrame(() => {
+      if (sharedScenario) {
+        setValues(sharedScenario.values);
+        setYear(sharedScenario.year);
+        setPreset(sharedScenario.preset);
+        setAnnouncement(`${sharedScenario.preset} shared pathway loaded`);
+      }
+      setBrief(window.location.hash === "#mission-brief");
+    });
+
     const introTimer = window.setTimeout(() => setIntro(false), 1550);
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add("is-visible");
@@ -81,6 +95,7 @@ export default function Home() {
     window.addEventListener("hashchange", onHash);
     updateScroll();
     return () => {
+      window.cancelAnimationFrame(sharedStateFrame);
       window.clearTimeout(introTimer);
       if (timerRef.current) cancelAnimationFrame(timerRef.current);
       cancelAnimationFrame(raf);
@@ -156,6 +171,20 @@ export default function Home() {
   const closeBrief = () => {
     setBrief(false);
     if (window.location.hash === "#mission-brief") history.replaceState(null, "", window.location.pathname + window.location.search);
+  };
+
+  const copyScenarioLink = async () => {
+    const url = new URL(window.location.pathname, window.location.origin);
+    url.search = scenarioQuery;
+    url.hash = "mission-brief";
+    try {
+      await navigator.clipboard.writeText(url.href);
+      setShareStatus("Scenario link copied");
+      setAnnouncement("Shareable scenario link copied to the clipboard");
+    } catch {
+      setShareStatus("Clipboard unavailable. Copy the link from the address bar.");
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    }
   };
 
   const movePlanet = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -241,7 +270,7 @@ export default function Home() {
       <section className="finale" data-reveal><span>YOUR MOVE.</span><h2>THE FUTURE<br/>IS WAITING.</h2><button className="finale-button magnetic" onClick={()=>document.querySelector("#lab")?.scrollIntoView({behavior:"smooth"})}><span>DESIGN A FUTURE</span><Icon name="arrow"/></button></section>
       <footer><div className="brand"><span className="brandmark"><i/><i/><i/></span><span>HORIZON<span>/</span>ATLAS</span></div><p>WHAT FUTURE WILL YOU DESIGN?</p><span>OPEN MODEL / 2026</span></footer>
 
-      {brief && <div id="mission-brief" className="modal" role="dialog" aria-modal="true" aria-labelledby="brief-title" aria-describedby="brief-description" onMouseDown={e => e.target === e.currentTarget && closeBrief()}><div className="brief"><button ref={closeRef} className="close" onClick={closeBrief} aria-label="Close brief"><Icon name="close"/></button><span className="section-no">MISSION BRIEF / {year}</span><h2 id="brief-title">Project {preset}</h2><p className="brief-sub" id="brief-description">A designed pathway toward a more resilient human future.</p><div className="brief-metrics"><div><strong>{score}</strong><span>PLANETARY SCORE</span></div><div><strong>+{temp}°C</strong><span>WARMING PATH</span></div><div><strong>{lives}M</strong><span>LIVES IMPROVED</span></div></div><p className="brief-note">Highest-leverage action: accelerate clean energy while pairing the transition with public health and universal education investment.</p><button className="run" onClick={() => window.print()}><Icon name="share"/><span>PRINT / SAVE BRIEF</span></button></div></div>}
+      {brief && <div id="mission-brief" className="modal" role="dialog" aria-modal="true" aria-labelledby="brief-title" aria-describedby="brief-description" onMouseDown={e => e.target === e.currentTarget && closeBrief()}><div className="brief"><button ref={closeRef} className="close" onClick={closeBrief} aria-label="Close brief"><Icon name="close"/></button><span className="section-no">MISSION BRIEF / {year}</span><h2 id="brief-title">Project {preset}</h2><p className="brief-sub" id="brief-description">A designed pathway toward a more resilient human future.</p><div className="brief-metrics"><div><strong>{score}</strong><span>PLANETARY SCORE</span></div><div><strong>+{temp}°C</strong><span>WARMING PATH</span></div><div><strong>{lives}M</strong><span>LIVES IMPROVED</span></div></div><p className="brief-note">Highest-leverage action: accelerate clean energy while pairing the transition with public health and universal education investment.</p><div className="brief-actions"><button className="run" onClick={copyScenarioLink}><Icon name="share"/><span>COPY SCENARIO LINK</span></button><button className="run secondary-run" onClick={() => window.print()}><Icon name="share"/><span>PRINT / SAVE BRIEF</span></button></div><p className="copy-status" role="status" aria-live="polite">{shareStatus}</p></div></div>}
     </main>
   );
 }
