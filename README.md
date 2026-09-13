@@ -1,3 +1,7 @@
+# horizon-atlas
+
+[![CI](https://github.com/shauryamalhotra957-wq/horizon-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/shauryamalhotra957-wq/horizon-atlas/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
  # Horizon Atlas
 
 Horizon Atlas is an interactive planetary intelligence lab. It turns abstract global trade-offs into a tactile simulation: tune policy investment across energy, food, water, health, and education; run the model to 2100; compare futures; and export a concise mission brief.
